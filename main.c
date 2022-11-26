@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<string.h>
+#include <process.h>
 
 struct User
 {
@@ -93,7 +94,11 @@ void addInfo()
     int semstr;
     printf("Name: ");
 
-    fgets(nm,100,stdin);
+     if( fgets(nm,100,stdin)!=NULL )
+        {
+            fgets(nm,100,stdin);
+        }
+
 
     printf("Enter Password: ");
     scanf("%s", pswrd);
@@ -115,10 +120,10 @@ void addInfo()
 
 void deleteInfo()
 {
-    int pos = -1,temp,arr[100];
+    int pos = -1,temp1,arr[100];
     for(int i = 0; i<n; i++)
     {
-        temp = user[i].numOfFriend;
+        temp1 = user[i].numOfFriend;
         if(q == user[i].uid)
         {
             pos = i;
@@ -128,7 +133,7 @@ void deleteInfo()
     for(int i = 0; i<n; i++)
     {
 
-        for(int j = 0; j<temp; j++)
+        for(int j = 0; j<temp1; j++)
         {
 
             if(q == user[i].friends[j])
@@ -143,13 +148,12 @@ void deleteInfo()
         for(int i = pos; i<n-1; i++)
         {
             user[i] = user[i+1];
-            for(int j = 0; j<temp; j++)
+            for(int j = 0; j<temp1; j++)
             {
                 user[i].friends[j] = user[i].friends[j+1];
             }
         }
         n--;
-        writeData();
     }
 }
 
@@ -203,8 +207,9 @@ void strongPass()
         sum = cnt+cnt1+cnt2+cnt3+cnt4;
         if(sum == 5)
         {
+
             printf("Name - %s", user[i].name);
-            printf("Password - %s\n", user[i].pass);
+            printf("Password - %s\n\n", user[i].pass);
         }
 
     }
@@ -213,7 +218,7 @@ void searchName()
 {
     char str[100];
     printf("Enter Name: ");
-    gets(str);
+    scanf("%s", str);
     for(int i = 0; i<n; i++)
     {
         if(strstr(user[i].name,str) != NULL)
@@ -226,7 +231,60 @@ void searchName()
 
 int main()
 {
-    getData();
-    searchName();
+    while(1){
+
+            getData();
+    int x,f1,f2;
+    printf("1. Semester Wise User\n");
+    printf("2. Delete User\n");
+    printf("3. Add User\n");
+    printf("4. Make Friend\n");
+    printf("5. Check Password\n");
+    printf("6. Search by Name\n");
+    printf("0. Exit\n");
+
+    printf("Enter Number: ");
+    scanf("%d", &x);
+    system("cls");
+
+    if(x == 1){
+            printf("Enter Semester: ");
+    scanf("%d", &q);
+        showInfo();
+    }
+    if(x == 2){
+        getData();
+        printf("Enter UID: ");
+        scanf("%d", &q);
+        deleteInfo();
+         writeData();
+    }
+
+    if(x == 3){
+        addInfo();
+        writeData();
+    }
+    if(x == 4){
+        printf("Enter UID: ");
+        scanf("%d", &f1);
+        printf("Enter UID: ");
+        scanf("%d", &f2);
+
+        addFriend(f1,f2);
+        writeData();
+    }
+
+    if(x == 5){
+        printf("Users With Strong Passwords Are: \n\n");
+        strongPass();
+    }
+
+    if(x == 6){
+        searchName();
+    }
+    if(x == 0){
+        exit(1);
+    }
+    }
 
 }
